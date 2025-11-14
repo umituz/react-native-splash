@@ -45,6 +45,12 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   const responsive = useResponsive();
   const insets = useSafeAreaInsets();
   const { t } = useLocalization();
+  
+  // Safety check: Don't render if tokens or responsive are not ready
+  if (!tokens || !responsive || !tokens.spacing || !responsive.horizontalPadding) {
+    return null;
+  }
+  
   const styles = useMemo(
     () => getStyles(tokens, responsive, insets, backgroundColor, gradientColors),
     [tokens, responsive, insets, backgroundColor, gradientColors],

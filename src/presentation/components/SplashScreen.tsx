@@ -221,8 +221,29 @@ const getStyles = (
   insets: { top: number; bottom: number },
   backgroundColor?: string,
   gradientColors?: string[],
-) =>
-  StyleSheet.create({
+) => {
+  // Safety check: Return empty styles if tokens or responsive are not ready
+  if (!tokens || !responsive || !tokens.spacing || !tokens.colors || !responsive.horizontalPadding) {
+    return StyleSheet.create({
+      container: { flex: 1 },
+      backgroundGradient: {},
+      content: {},
+      logoContainer: {},
+      logoBackground: {},
+      textContainer: {},
+      appName: {},
+      tagline: {},
+      loadingContainer: {},
+      loadingBar: {},
+      loadingProgress: {},
+      loadingText: {},
+      footer: {},
+      footerText: {},
+      versionText: {},
+    });
+  }
+  
+  return StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: backgroundColor || tokens.colors.primary,
@@ -325,4 +346,5 @@ const getStyles = (
       fontSize: responsive.getFontSize(STATIC_TOKENS.typography.caption.fontSize ?? 12),
     },
   });
+};
 

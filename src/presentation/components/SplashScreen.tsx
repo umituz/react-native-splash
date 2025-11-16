@@ -9,7 +9,9 @@ import { View, StyleSheet, Animated } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppDesignTokens } from "@umituz/react-native-design-system-theme";
 import { useLocalization } from "@umituz/react-native-localization";
-import { useResponsive, AtomicIcon, AtomicText, STATIC_TOKENS, withAlpha } from "@umituz/react-native-design-system";
+import { useResponsive } from "@umituz/react-native-design-system-responsive";
+import { AtomicIcon, AtomicText } from "@umituz/react-native-design-system-atoms";
+import { STATIC_TOKENS, withAlpha } from "@umituz/react-native-design-system-theme";
 import type { SplashOptions } from "../../domain/entities/SplashOptions";
 
 export interface SplashScreenProps extends SplashOptions {

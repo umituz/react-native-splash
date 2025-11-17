@@ -1,11 +1,11 @@
 /**
  * Splash Screen Component
  *
- * Generic splash screen with animations, gradients, and customizable branding
+ * Simple splash screen with logo, app name, and loading indicator
  */
 
-import React, { useEffect, useRef, useMemo } from "react";
-import { View, StyleSheet, Animated, Text } from "react-native";
+import React, { useEffect } from "react";
+import { View, StyleSheet, Text, ActivityIndicator } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalization } from "@umituz/react-native-localization";
 import { AtomicIcon } from "@umituz/react-native-design-system-atoms";
@@ -26,13 +26,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   tagline,
   logo,
   backgroundColor,
-  gradientColors,
   loadingText,
   showLoading = true,
-  showProgressBar = true,
-  footerText,
-  versionText,
-  animationDuration = 2000,
   minimumDisplayTime = 1500,
   onReady,
   renderLogo,
@@ -43,91 +38,38 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   const insets = useSafeAreaInsets();
   const { t } = useLocalization();
   
-  const styles = useMemo(
-    () => getStyles(insets, backgroundColor, gradientColors),
-    [insets, backgroundColor, gradientColors],
-  );
-
-  // Animation values
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0.8)).current;
-  const slideAnim = useRef(new Animated.Value(50)).current;
+  const styles = getStyles(insets, backgroundColor);
 
   /**
-   * Initialize animations
+   * Call onReady after minimum display time
    */
   useEffect(() => {
     if (!visible) return;
 
-    // Start entrance animations
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }),
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        tension: 100,
-        friction: 8,
-        useNativeDriver: true,
-      }),
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 800,
-        useNativeDriver: true,
-      }),
-    ]).start();
-
-    // Call onReady after minimum display time
     const timer = setTimeout(() => {
       if (onReady) {
         onReady();
       }
-    }, Math.max(minimumDisplayTime, animationDuration));
+    }, minimumDisplayTime);
 
     return () => clearTimeout(timer);
-  }, [visible, fadeAnim, scaleAnim, slideAnim, minimumDisplayTime, animationDuration, onReady]);
+  }, [visible, minimumDisplayTime, onReady]);
 
   if (!visible) return null;
 
   const displayAppName = appName || t("branding.appName", "App Name");
   const displayTagline = tagline || t("branding.tagline", "Your tagline here");
   const displayLoadingText = loadingText || t("general.loading", "Loading...");
-  const displayFooterText = footerText || t("branding.poweredBy", "Powered by");
-  const displayVersionText = versionText;
 
   return (
     <View style={styles.container}>
-      {/* Background Gradient Effect */}
-      {gradientColors && gradientColors.length > 0 ? (
-        <View style={[styles.backgroundGradient, { backgroundColor: gradientColors[0] }]} />
-      ) : (
-        <View style={[styles.backgroundGradient, { backgroundColor: backgroundColor || "#6366F1" }]} />
-      )}
-
       {/* Main Content */}
-      <Animated.View
-        style={[
-          styles.content,
-          {
-            opacity: fadeAnim,
-            transform: [{ scale: scaleAnim }],
-          },
-        ]}
-      >
+      <View style={styles.content}>
         {renderLogo ? (
           renderLogo()
         ) : (
           <View style={styles.logoContainer}>
-            <Animated.View
-              style={[
-                styles.logoBackground,
-                {
-                  transform: [{ scale: scaleAnim }],
-                },
-              ]}
-            >
+            <View style={styles.logoBackground}>
               {typeof logo === "string" ? (
                 <AtomicIcon name={logo || "Sparkles"} size="xl" color="primary" />
               ) : logo ? (
@@ -135,74 +77,30 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
               ) : (
                 <AtomicIcon name="Sparkles" size="xl" color="primary" />
               )}
-            </Animated.View>
+            </View>
           </View>
         )}
 
         {renderContent ? (
           renderContent()
         ) : (
-          <Animated.View
-            style={[
-              styles.textContainer,
-              {
-                opacity: fadeAnim,
-                transform: [{ translateY: slideAnim }],
-              },
-            ]}
-          >
+          <View style={styles.textContainer}>
             <Text style={styles.appName}>{displayAppName}</Text>
-            <Text style={styles.tagline}>{displayTagline}</Text>
-          </Animated.View>
+            {displayTagline && <Text style={styles.tagline}>{displayTagline}</Text>}
+          </View>
         )}
-      </Animated.View>
+      </View>
 
       {/* Loading Indicator */}
       {showLoading && (
-        <Animated.View
-          style={[
-            styles.loadingContainer,
-            {
-              opacity: fadeAnim,
-            },
-          ]}
-        >
-          {showProgressBar && (
-            <View style={styles.loadingBar}>
-              <Animated.View
-                style={[
-                  styles.loadingProgress,
-                  {
-                    transform: [{ scaleX: scaleAnim }],
-                  },
-                ]}
-              />
-            </View>
-          )}
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#FFFFFF" />
           <Text style={styles.loadingText}>{displayLoadingText}</Text>
-        </Animated.View>
+        </View>
       )}
 
       {/* Footer */}
-      {renderFooter ? (
-        renderFooter()
-      ) : (
-        <Animated.View
-          style={[
-            styles.footer,
-            {
-              opacity: fadeAnim,
-            },
-          ]}
-        >
-          {displayFooterText && (
-            <Text style={styles.footerText}>{displayFooterText}</Text>
-          )}
-          {displayVersionText && (
-            <Text style={styles.versionText}>{displayVersionText}</Text>
-          )}
-        </Animated.View>
-      )}
+      {renderFooter && renderFooter()}
     </View>
   );
 };
@@ -210,39 +108,29 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 const getStyles = (
   insets: { top: number; bottom: number },
   backgroundColor?: string,
-  gradientColors?: string[],
 ) => {
   return StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: backgroundColor || "#6366F1",
-      paddingHorizontal: 24,
       paddingTop: insets.top,
       paddingBottom: insets.bottom,
     },
-    backgroundGradient: {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      opacity: 0.9,
-    },
     content: {
-      flex: 3,
+      flex: 1,
       alignItems: "center",
       justifyContent: "center",
       paddingHorizontal: 24,
     },
     logoContainer: {
-      marginBottom: 64,
+      marginBottom: 32,
       alignItems: "center",
       justifyContent: "center",
     },
     logoBackground: {
-      width: 120,
-      height: 120,
-      borderRadius: 60,
+      width: 100,
+      height: 100,
+      borderRadius: 50,
       backgroundColor: "rgba(255, 255, 255, 0.2)",
       alignItems: "center",
       justifyContent: "center",
@@ -250,64 +138,32 @@ const getStyles = (
     },
     textContainer: {
       alignItems: "center",
-      marginBottom: 64,
+      marginBottom: 48,
     },
     appName: {
-      fontSize: 32,
+      fontSize: 28,
       fontWeight: "bold",
       color: "#FFFFFF",
       textAlign: "center",
-      marginBottom: 16,
+      marginBottom: 12,
     },
     tagline: {
-      fontSize: 18,
+      fontSize: 16,
       color: "#FFFFFF",
       textAlign: "center",
       opacity: 0.9,
-      maxWidth: 300,
+      maxWidth: 280,
     },
     loadingContainer: {
-      flex: 1,
       alignItems: "center",
       justifyContent: "center",
-      width: 300,
-      alignSelf: "center",
-    },
-    loadingBar: {
-      width: "100%",
-      height: 4,
-      backgroundColor: "rgba(255, 255, 255, 0.3)",
-      borderRadius: 2,
-      marginBottom: 16,
-      overflow: "hidden",
-    },
-    loadingProgress: {
-      width: "100%",
-      height: "100%",
-      backgroundColor: "#FFFFFF",
-      borderRadius: 2,
+      paddingBottom: 48,
     },
     loadingText: {
-      fontSize: 16,
+      fontSize: 14,
       color: "#FFFFFF",
       opacity: 0.8,
-    },
-    footer: {
-      flex: 0.5,
-      alignItems: "center",
-      justifyContent: "flex-start",
-      paddingBottom: 16,
-    },
-    footerText: {
-      fontSize: 12,
-      color: "#FFFFFF",
-      opacity: 0.7,
-      marginBottom: 8,
-    },
-    versionText: {
-      fontSize: 12,
-      color: "#FFFFFF",
-      opacity: 0.5,
+      marginTop: 16,
     },
   });
 };

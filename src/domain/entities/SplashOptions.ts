@@ -27,10 +27,9 @@ export interface SplashOptions {
   logo?: ReactNode | string;
 
   /**
-   * Background color or gradient colors
+   * Background color
    */
   backgroundColor?: string;
-  gradientColors?: string[];
 
   /**
    * Loading text
@@ -41,26 +40,6 @@ export interface SplashOptions {
    * Show loading indicator (default: true)
    */
   showLoading?: boolean;
-
-  /**
-   * Show progress bar (default: true)
-   */
-  showProgressBar?: boolean;
-
-  /**
-   * Footer text (e.g., "Powered by...")
-   */
-  footerText?: string;
-
-  /**
-   * Version text
-   */
-  versionText?: string;
-
-  /**
-   * Animation duration in milliseconds (default: 2000)
-   */
-  animationDuration?: number;
 
   /**
    * Minimum display time in milliseconds (default: 1500)

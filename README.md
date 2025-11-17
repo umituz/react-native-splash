@@ -1,17 +1,13 @@
 # @umituz/react-native-splash
 
-Generic splash screen for React Native apps with animations, gradients, and customizable branding. Follows SOLID, DRY, KISS principles - fully reusable across hundreds of apps.
+Simple splash screen for React Native apps with logo, app name, and loading indicator. Minimal dependencies, no over-engineering.
 
 ## Features
 
-- ✅ **Generic & Reusable**: Works with any app, fully customizable via props
-- ✅ **Animations**: Smooth fade, scale, and slide animations
-- ✅ **Gradient Backgrounds**: Support for gradient or solid colors
-- ✅ **Customizable Branding**: Logo, app name, tagline, footer
-- ✅ **Loading Indicators**: Progress bar and loading text
-- ✅ **SOLID Principles**: Clean architecture, easy to extend
-- ✅ **DRY**: No code duplication, generic components
-- ✅ **KISS**: Simple API, easy to understand and use
+- ✅ **Simple & Lightweight**: No animations, no gradients, just the essentials
+- ✅ **Minimal Dependencies**: Only requires AtomicIcon and localization
+- ✅ **Customizable**: Logo, app name, tagline, background color
+- ✅ **Loading Indicator**: Built-in ActivityIndicator
 - ✅ **Type-Safe**: Full TypeScript support
 
 ## Installation
@@ -37,7 +33,7 @@ import { SplashScreen } from '@umituz/react-native-splash';
 />
 ```
 
-### Advanced Example
+### With Custom Background
 
 ```typescript
 <SplashScreen
@@ -45,13 +41,8 @@ import { SplashScreen } from '@umituz/react-native-splash';
   tagline="Your tagline here"
   logo="Sparkles"
   backgroundColor="#3B82F6"
-  gradientColors={['#3B82F6', '#8B5CF6']}
   loadingText="Loading..."
   showLoading={true}
-  showProgressBar={true}
-  footerText="Powered by"
-  versionText="v1.0.0"
-  animationDuration={2000}
   minimumDisplayTime={1500}
   onReady={handleReady}
 />
@@ -79,13 +70,8 @@ interface SplashOptions {
   tagline?: string;
   logo?: ReactNode | string;
   backgroundColor?: string;
-  gradientColors?: string[];
   loadingText?: string;
   showLoading?: boolean;
-  showProgressBar?: boolean;
-  footerText?: string;
-  versionText?: string;
-  animationDuration?: number;
   minimumDisplayTime?: number;
   onReady?: () => void | Promise<void>;
   renderLogo?: () => ReactNode;

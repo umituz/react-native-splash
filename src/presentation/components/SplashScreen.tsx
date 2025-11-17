@@ -5,13 +5,10 @@
  */
 
 import React, { useEffect, useRef, useMemo } from "react";
-import { View, StyleSheet, Animated } from "react-native";
+import { View, StyleSheet, Animated, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useAppDesignTokens } from "@umituz/react-native-design-system-theme";
 import { useLocalization } from "@umituz/react-native-localization";
-import { useResponsive } from "@umituz/react-native-design-system-responsive";
-import { AtomicIcon, AtomicText } from "@umituz/react-native-design-system-atoms";
-import { STATIC_TOKENS, withAlpha } from "@umituz/react-native-design-system-theme";
+import { AtomicIcon } from "@umituz/react-native-design-system-atoms";
 import type { SplashOptions } from "../../domain/entities/SplashOptions";
 
 export interface SplashScreenProps extends SplashOptions {
@@ -43,19 +40,12 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   renderFooter,
   visible = true,
 }) => {
-  const tokens = useAppDesignTokens();
-  const responsive = useResponsive();
   const insets = useSafeAreaInsets();
   const { t } = useLocalization();
   
-  // Safety check: Don't render if tokens or responsive are not ready
-  if (!tokens || !tokens.colors || !tokens.spacing || !responsive || !responsive.horizontalPadding) {
-    return null;
-  }
-  
   const styles = useMemo(
-    () => getStyles(tokens, responsive, insets, backgroundColor, gradientColors),
-    [tokens, responsive, insets, backgroundColor, gradientColors],
+    () => getStyles(insets, backgroundColor, gradientColors),
+    [insets, backgroundColor, gradientColors],
   );
 
   // Animation values
@@ -113,7 +103,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
       {gradientColors && gradientColors.length > 0 ? (
         <View style={[styles.backgroundGradient, { backgroundColor: gradientColors[0] }]} />
       ) : (
-        <View style={[styles.backgroundGradient, { backgroundColor: backgroundColor || tokens?.colors?.primary || "#6366F1" }]} />
+        <View style={[styles.backgroundGradient, { backgroundColor: backgroundColor || "#6366F1" }]} />
       )}
 
       {/* Main Content */}
@@ -161,8 +151,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
               },
             ]}
           >
-            <AtomicText style={styles.appName}>{displayAppName}</AtomicText>
-            <AtomicText style={styles.tagline}>{displayTagline}</AtomicText>
+            <Text style={styles.appName}>{displayAppName}</Text>
+            <Text style={styles.tagline}>{displayTagline}</Text>
           </Animated.View>
         )}
       </Animated.View>
@@ -189,7 +179,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
               />
             </View>
           )}
-          <AtomicText style={styles.loadingText}>{displayLoadingText}</AtomicText>
+          <Text style={styles.loadingText}>{displayLoadingText}</Text>
         </Animated.View>
       )}
 
@@ -206,10 +196,10 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
           ]}
         >
           {displayFooterText && (
-            <AtomicText style={styles.footerText}>{displayFooterText}</AtomicText>
+            <Text style={styles.footerText}>{displayFooterText}</Text>
           )}
           {displayVersionText && (
-            <AtomicText style={styles.versionText}>{displayVersionText}</AtomicText>
+            <Text style={styles.versionText}>{displayVersionText}</Text>
           )}
         </Animated.View>
       )}
@@ -218,38 +208,15 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 };
 
 const getStyles = (
-  tokens: ReturnType<typeof useAppDesignTokens>,
-  responsive: ReturnType<typeof useResponsive>,
   insets: { top: number; bottom: number },
   backgroundColor?: string,
   gradientColors?: string[],
 ) => {
-  // Safety check: Return empty styles if tokens or responsive are not ready
-  if (!tokens || !responsive || !tokens.spacing || !tokens.colors || !responsive.horizontalPadding) {
-    return StyleSheet.create({
-      container: { flex: 1 },
-      backgroundGradient: {},
-      content: {},
-      logoContainer: {},
-      logoBackground: {},
-      textContainer: {},
-      appName: {},
-      tagline: {},
-      loadingContainer: {},
-      loadingBar: {},
-      loadingProgress: {},
-      loadingText: {},
-      footer: {},
-      footerText: {},
-      versionText: {},
-    });
-  }
-  
   return StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: backgroundColor || tokens.colors.primary,
-      paddingHorizontal: responsive.horizontalPadding,
+      backgroundColor: backgroundColor || "#6366F1",
+      paddingHorizontal: 24,
       paddingTop: insets.top,
       paddingBottom: insets.bottom,
     },
@@ -265,87 +232,82 @@ const getStyles = (
       flex: 3,
       alignItems: "center",
       justifyContent: "center",
-      paddingHorizontal: tokens.spacing.lg,
+      paddingHorizontal: 24,
     },
     logoContainer: {
-      marginBottom: tokens.spacing.xxl * 2,
+      marginBottom: 64,
       alignItems: "center",
       justifyContent: "center",
     },
     logoBackground: {
-      width: responsive.logoSize,
-      height: responsive.logoSize,
-      borderRadius: STATIC_TOKENS.borders.radius.full,
-      backgroundColor: tokens.colors.surface,
+      width: 120,
+      height: 120,
+      borderRadius: 60,
+      backgroundColor: "rgba(255, 255, 255, 0.2)",
       alignItems: "center",
       justifyContent: "center",
-      padding: STATIC_TOKENS.spacing.md,
+      padding: 16,
     },
     textContainer: {
       alignItems: "center",
-      marginBottom: tokens.spacing.xxl * 2,
+      marginBottom: 64,
     },
     appName: {
-      ...STATIC_TOKENS.typography.headingLarge,
-      color: tokens.colors.textInverse,
+      fontSize: 32,
+      fontWeight: "bold",
+      color: "#FFFFFF",
       textAlign: "center",
-      marginBottom: tokens.spacing.md,
-      fontSize: responsive.getFontSize(STATIC_TOKENS.typography.headingLarge.fontSize ?? 32),
-      fontWeight: STATIC_TOKENS.typography.bold,
+      marginBottom: 16,
     },
     tagline: {
-      ...STATIC_TOKENS.typography.bodyLarge,
-      color: tokens.colors.textInverse,
+      fontSize: 18,
+      color: "#FFFFFF",
       textAlign: "center",
       opacity: 0.9,
-      maxWidth: responsive.maxContentWidth,
-      fontSize: responsive.getFontSize(STATIC_TOKENS.typography.bodyLarge.fontSize ?? 18),
+      maxWidth: 300,
     },
     loadingContainer: {
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
-      width: responsive.maxContentWidth,
+      width: 300,
       alignSelf: "center",
     },
     loadingBar: {
       width: "100%",
       height: 4,
-      backgroundColor: withAlpha(tokens.colors.textInverse, 0.3),
-      borderRadius: STATIC_TOKENS.borders.radius.xs,
-      marginBottom: tokens.spacing.md,
+      backgroundColor: "rgba(255, 255, 255, 0.3)",
+      borderRadius: 2,
+      marginBottom: 16,
       overflow: "hidden",
     },
     loadingProgress: {
       width: "100%",
       height: "100%",
-      backgroundColor: tokens.colors.textInverse,
-      borderRadius: STATIC_TOKENS.borders.radius.xs,
+      backgroundColor: "#FFFFFF",
+      borderRadius: 2,
     },
     loadingText: {
-      ...STATIC_TOKENS.typography.bodyMedium,
-      color: tokens.colors.textInverse,
+      fontSize: 16,
+      color: "#FFFFFF",
       opacity: 0.8,
-      fontSize: responsive.getFontSize(STATIC_TOKENS.typography.bodyMedium.fontSize ?? 16),
     },
     footer: {
       flex: 0.5,
       alignItems: "center",
       justifyContent: "flex-start",
-      paddingBottom: tokens.spacing.md,
+      paddingBottom: 16,
     },
     footerText: {
-      ...STATIC_TOKENS.typography.caption,
-      color: tokens.colors.textInverse,
+      fontSize: 12,
+      color: "#FFFFFF",
       opacity: 0.7,
-      marginBottom: tokens.spacing.xs,
-      fontSize: responsive.getFontSize(STATIC_TOKENS.typography.caption.fontSize ?? 12),
+      marginBottom: 8,
     },
     versionText: {
-      ...STATIC_TOKENS.typography.caption,
-      color: tokens.colors.textInverse,
+      fontSize: 12,
+      color: "#FFFFFF",
       opacity: 0.5,
-      fontSize: responsive.getFontSize(STATIC_TOKENS.typography.caption.fontSize ?? 12),
     },
   });
 };

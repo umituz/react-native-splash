@@ -49,7 +49,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   const { t } = useLocalization();
   
   // Safety check: Don't render if tokens or responsive are not ready
-  if (!tokens || !responsive || !tokens.spacing || !responsive.horizontalPadding) {
+  if (!tokens || !tokens.colors || !tokens.spacing || !responsive || !responsive.horizontalPadding) {
     return null;
   }
   
@@ -113,7 +113,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
       {gradientColors && gradientColors.length > 0 ? (
         <View style={[styles.backgroundGradient, { backgroundColor: gradientColors[0] }]} />
       ) : (
-        <View style={[styles.backgroundGradient, { backgroundColor: backgroundColor || tokens.colors.primary }]} />
+        <View style={[styles.backgroundGradient, { backgroundColor: backgroundColor || tokens?.colors?.primary || "#6366F1" }]} />
       )}
 
       {/* Main Content */}

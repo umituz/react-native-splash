@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-splash",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "Generic splash screen for React Native apps with animations, gradients, and customizable branding. SOLID, DRY, KISS principles applied.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

@@ -35,6 +35,7 @@
     "@umituz/react-native-design-system-responsive": "*",
     "@umituz/react-native-design-system-theme": "*",
     "@umituz/react-native-localization": "latest",
+    "expo-linear-gradient": "~14.0.0",
     "react": ">=18.2.0",
     "react-native": ">=0.74.0",
     "react-native-safe-area-context": "^5.0.0"

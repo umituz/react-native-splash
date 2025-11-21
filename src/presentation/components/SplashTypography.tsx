@@ -5,12 +5,12 @@
 
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import type { AppDesignTokens } from "@umituz/react-native-design-system-theme";
+import type { DesignTokens } from "@umituz/react-native-design-system-theme";
 
 export interface SplashTypographyProps {
   appName: string;
   tagline?: string;
-  tokens: AppDesignTokens;
+  tokens: DesignTokens;
 }
 
 export const SplashTypography: React.FC<SplashTypographyProps> = ({
@@ -34,7 +34,7 @@ export const SplashTypography: React.FC<SplashTypographyProps> = ({
   );
 };
 
-const getStyles = (tokens: AppDesignTokens) => {
+const getStyles = (tokens: DesignTokens) => {
   return StyleSheet.create({
     container: {
       alignItems: "center",

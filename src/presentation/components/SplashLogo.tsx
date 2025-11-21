@@ -25,11 +25,11 @@ export const SplashLogo: React.FC<SplashLogoProps> = ({
       <View style={styles.glow} />
       <View style={styles.background}>
         {typeof logo === "string" ? (
-          <AtomicIcon name={logo || "Sparkles"} size="xxl" color="white" />
+          <AtomicIcon name={logo || "Sparkles"} size="xxl" customColor="#FFFFFF" />
         ) : logo ? (
           logo
         ) : (
-          <AtomicIcon name="Sparkles" size="xxl" color="white" />
+          <AtomicIcon name="Sparkles" size="xxl" customColor="#FFFFFF" />
         )}
       </View>
     </View>

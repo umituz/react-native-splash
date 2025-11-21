@@ -5,11 +5,11 @@
 
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import type { AppDesignTokens } from "@umituz/react-native-design-system-theme";
+import type { DesignTokens } from "@umituz/react-native-design-system-theme";
 
 export interface SplashLoadingProps {
   loadingText: string;
-  tokens: AppDesignTokens;
+  tokens: DesignTokens;
   bottomInset: number;
 }
 
@@ -30,7 +30,7 @@ export const SplashLoading: React.FC<SplashLoadingProps> = ({
   );
 };
 
-const getStyles = (tokens: AppDesignTokens, bottomInset: number) => {
+const getStyles = (tokens: DesignTokens, bottomInset: number) => {
   return StyleSheet.create({
     container: {
       alignItems: "center",

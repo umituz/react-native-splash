@@ -50,7 +50,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 
   const isDark = themeMode === "dark";
 
-  const gradientColors: string[] = backgroundColor
+  const gradientColors = backgroundColor
     ? generateGradientFromColor(backgroundColor, isDark)
     : getDefaultGradient(isDark);
 
@@ -77,7 +77,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={gradientColors}
+        colors={gradientColors as readonly string[]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.gradient}

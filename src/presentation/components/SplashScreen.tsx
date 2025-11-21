@@ -8,15 +8,11 @@ import { View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalization } from "@umituz/react-native-localization";
-import {
-  useDesignSystemTheme,
-  useAppDesignTokens,
-} from "@umituz/react-native-design-system-theme";
+import { useAppDesignTokens } from "@umituz/react-native-design-system-theme";
 import { SplashLogo } from "./SplashLogo";
 import { SplashTypography } from "./SplashTypography";
 import { SplashLoading } from "./SplashLoading";
 import { SplashDecorations } from "./SplashDecorations";
-import { generateGradientFromColor } from "../utils/splashGradient.utils";
 import type { SplashOptions } from "../../domain/entities/SplashOptions";
 
 export interface SplashScreenProps extends SplashOptions {
@@ -43,19 +39,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 }) => {
   const insets = useSafeAreaInsets();
   const { t } = useLocalization();
-  const { themeMode } = useDesignSystemTheme();
   const tokens = useAppDesignTokens();
-
-  const isDark = themeMode === "dark";
-
-  // Use provided gradientColors, or generate from backgroundColor, or fallback to backgroundColor as single color
-  const finalGradientColors: readonly string[] =
-    gradientColors ||
-    (backgroundColor
-      ? generateGradientFromColor(backgroundColor, isDark)
-      : backgroundColor
-        ? [backgroundColor]
-        : [tokens.colors.primary]);
 
   const styles = getStyles(insets, tokens.spacing);
 
@@ -77,44 +61,70 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   const displayTagline = tagline || t("branding.tagline", "Your tagline here");
   const displayLoadingText = loadingText || t("general.loading", "Loading...");
 
-  return (
-    <View style={styles.container}>
-      <LinearGradient
-        colors={finalGradientColors}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.gradient}
-      >
-        <SplashDecorations />
+  // Use gradientColors if provided, otherwise use backgroundColor as solid color
+  const finalBackgroundColor = gradientColors
+    ? undefined
+    : backgroundColor || tokens.colors.primary;
 
-        <View style={styles.content}>
-          {renderLogo ? (
-            renderLogo()
-          ) : (
-            <SplashLogo logo={logo} />
-          )}
+  const finalGradientColors: readonly string[] = gradientColors || [
+    finalBackgroundColor!,
+  ];
 
-          {renderContent ? (
-            renderContent()
-          ) : (
-            <SplashTypography
-              appName={displayAppName}
-              tagline={displayTagline}
-              tokens={tokens}
-            />
-          )}
-        </View>
+  // Use LinearGradient only if gradientColors provided (length > 1)
+  const hasGradient = gradientColors && gradientColors.length > 1;
 
-        {showLoading && (
-          <SplashLoading
-            loadingText={displayLoadingText}
-            tokens={tokens}
-            bottomInset={insets.bottom}
-          />
+  const content = (
+    <>
+      <SplashDecorations />
+
+      <View style={styles.content}>
+        {renderLogo ? (
+          renderLogo()
+        ) : (
+          <SplashLogo logo={logo} />
         )}
 
-        {renderFooter && renderFooter()}
-      </LinearGradient>
+        {renderContent ? (
+          renderContent()
+        ) : (
+          <SplashTypography
+            appName={displayAppName}
+            tagline={displayTagline}
+            tokens={tokens}
+          />
+        )}
+      </View>
+
+      {showLoading && (
+        <SplashLoading
+          loadingText={displayLoadingText}
+          tokens={tokens}
+          bottomInset={insets.bottom}
+        />
+      )}
+
+      {renderFooter && renderFooter()}
+    </>
+  );
+
+  return (
+    <View style={styles.container}>
+      {hasGradient ? (
+        <LinearGradient
+          colors={finalGradientColors}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.gradient}
+        >
+          {content}
+        </LinearGradient>
+      ) : (
+        <View
+          style={[styles.gradient, { backgroundColor: finalBackgroundColor }]}
+        >
+          {content}
+        </View>
+      )}
     </View>
   );
 };

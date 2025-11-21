@@ -27,9 +27,15 @@ export interface SplashOptions {
   logo?: ReactNode | string;
 
   /**
-   * Background color
+   * Background color (will generate gradient automatically)
    */
   backgroundColor?: string;
+
+  /**
+   * Custom gradient colors (overrides backgroundColor)
+   * If provided, backgroundColor is ignored
+   */
+  gradientColors?: readonly string[];
 
   /**
    * Loading text

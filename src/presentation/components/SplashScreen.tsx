@@ -16,10 +16,7 @@ import { SplashLogo } from "./SplashLogo";
 import { SplashTypography } from "./SplashTypography";
 import { SplashLoading } from "./SplashLoading";
 import { SplashDecorations } from "./SplashDecorations";
-import {
-  getDefaultGradient,
-  generateGradientFromColor,
-} from "../utils/splashGradient.utils";
+import { generateGradientFromColor } from "../utils/splashGradient.utils";
 import type { SplashOptions } from "../../domain/entities/SplashOptions";
 
 export interface SplashScreenProps extends SplashOptions {
@@ -34,6 +31,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   tagline,
   logo,
   backgroundColor,
+  gradientColors,
   loadingText,
   showLoading = true,
   minimumDisplayTime = 1500,
@@ -50,9 +48,14 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 
   const isDark = themeMode === "dark";
 
-  const gradientColors = backgroundColor
-    ? generateGradientFromColor(backgroundColor, isDark)
-    : getDefaultGradient(isDark);
+  // Use provided gradientColors, or generate from backgroundColor, or fallback to backgroundColor as single color
+  const finalGradientColors: readonly string[] =
+    gradientColors ||
+    (backgroundColor
+      ? generateGradientFromColor(backgroundColor, isDark)
+      : backgroundColor
+        ? [backgroundColor]
+        : [tokens.colors.primary]);
 
   const styles = getStyles(insets, tokens.spacing);
 
@@ -77,7 +80,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={gradientColors as readonly string[]}
+        colors={finalGradientColors}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.gradient}

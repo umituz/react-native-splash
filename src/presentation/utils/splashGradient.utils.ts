@@ -26,31 +26,22 @@ export const adjustColorBrightness = (hex: string, percent: number): string => {
 };
 
 /**
- * Get default gradient colors based on theme
- */
-export const getDefaultGradient = (isDark: boolean): string[] => {
-  return isDark
-    ? ["#1E1B4B", "#312E81", "#4C1D95", "#6B21A8"] // Dark indigo to purple
-    : ["#6366F1", "#8B5CF6", "#A855F7", "#EC4899"]; // Indigo to pink
-};
-
-/**
  * Generate gradient colors from backgroundColor
  */
 export const generateGradientFromColor = (
   backgroundColor: string,
   isDark: boolean,
-): string[] => {
+): readonly string[] => {
   return isDark
-    ? [
+    ? ([
         backgroundColor,
         adjustColorBrightness(backgroundColor, -20),
         adjustColorBrightness(backgroundColor, -30),
-      ]
-    : [
+      ] as const)
+    : ([
         backgroundColor,
         adjustColorBrightness(backgroundColor, 10),
         adjustColorBrightness(backgroundColor, 20),
-      ];
+      ] as const);
 };
 

@@ -53,7 +53,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   const finalBackgroundColor = backgroundColor || colors.primary;
   
   // Generate gradient colors based on theme
-  const gradientColors = backgroundColor
+  const gradientColors: [string, string] = backgroundColor
     ? [backgroundColor, adjustColorBrightness(backgroundColor, isDark ? -15 : 10)]
     : isDark
     ? [colors.primary, adjustColorBrightness(colors.primary, -20)]
@@ -101,7 +101,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                   <AtomicIcon
                     name={logo || "Sparkles"}
                     size="xl"
-                    color={isDark ? "primary" : "white"}
+                    color={isDark ? "primary" : "textInverse"}
                   />
                 ) : logo ? (
                   logo
@@ -109,7 +109,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
                   <AtomicIcon
                     name="Sparkles"
                     size="xl"
-                    color={isDark ? "primary" : "white"}
+                    color={isDark ? "primary" : "textInverse"}
                   />
                 )}
               </View>

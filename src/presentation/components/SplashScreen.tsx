@@ -66,12 +66,15 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
     ? undefined
     : backgroundColor || tokens.colors.primary;
 
-  const finalGradientColors: string[] = gradientColors
-    ? [...gradientColors]
-    : [finalBackgroundColor!];
-
   // Use LinearGradient only if gradientColors provided (length > 1)
   const hasGradient = gradientColors && gradientColors.length > 1;
+
+  // For LinearGradient, ensure at least 2 colors (tuple type requirement)
+  const finalGradientColors: [string, string, ...string[]] = hasGradient
+    ? (gradientColors.length >= 2
+        ? (gradientColors as [string, string, ...string[]])
+        : [gradientColors[0], gradientColors[0] || finalBackgroundColor!])
+    : [finalBackgroundColor!, finalBackgroundColor!];
 
   const content = (
     <>

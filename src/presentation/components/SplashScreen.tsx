@@ -50,7 +50,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 
   const isDark = themeMode === "dark";
 
-  const gradientColors = backgroundColor
+  const gradientColors: string[] = backgroundColor
     ? generateGradientFromColor(backgroundColor, isDark)
     : getDefaultGradient(isDark);
 

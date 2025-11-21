@@ -66,9 +66,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
     ? undefined
     : backgroundColor || tokens.colors.primary;
 
-  const finalGradientColors: readonly string[] = gradientColors || [
-    finalBackgroundColor!,
-  ];
+  const finalGradientColors: string[] = gradientColors
+    ? [...gradientColors]
+    : [finalBackgroundColor!];
 
   // Use LinearGradient only if gradientColors provided (length > 1)
   const hasGradient = gradientColors && gradientColors.length > 1;
@@ -111,7 +111,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
     <View style={styles.container}>
       {hasGradient ? (
         <LinearGradient
-          colors={finalGradientColors as readonly string[]}
+          colors={finalGradientColors}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.gradient}

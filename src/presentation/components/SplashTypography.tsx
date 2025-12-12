@@ -11,14 +11,16 @@ export interface SplashTypographyProps {
   appName: string;
   tagline?: string;
   tokens: DesignTokens;
+  textColor?: string;
 }
 
 export const SplashTypography: React.FC<SplashTypographyProps> = ({
   appName,
   tagline,
   tokens,
+  textColor = "#FFFFFF",
 }) => {
-  const styles = getStyles(tokens);
+  const styles = getStyles(tokens, textColor);
 
   return (
     <View style={styles.container}>
@@ -34,7 +36,7 @@ export const SplashTypography: React.FC<SplashTypographyProps> = ({
   );
 };
 
-const getStyles = (tokens: DesignTokens) => {
+const getStyles = (tokens: DesignTokens, textColor: string) => {
   return StyleSheet.create({
     container: {
       alignItems: "center",
@@ -43,7 +45,7 @@ const getStyles = (tokens: DesignTokens) => {
     appName: {
       fontSize: 48,
       fontWeight: "800" as const,
-      color: "#FFFFFF",
+      color: textColor,
       textAlign: "center" as const,
       marginBottom: tokens.spacing.md,
       letterSpacing: -1.2,
@@ -54,7 +56,7 @@ const getStyles = (tokens: DesignTokens) => {
     },
     tagline: {
       fontSize: 17,
-      color: "#FFFFFF",
+      color: textColor,
       textAlign: "center" as const,
       opacity: 0.95,
       maxWidth: 320,

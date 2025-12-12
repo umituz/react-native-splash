@@ -63,5 +63,12 @@ export interface SplashOptions {
   renderLogo?: () => ReactNode;
   renderContent?: () => ReactNode;
   renderFooter?: () => ReactNode;
+
+  /**
+   * Custom colors for dynamic theming
+   */
+  textColor?: string;
+  iconColor?: string;
+  decorationColor?: string;
 }
 

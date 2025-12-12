@@ -3,7 +3,7 @@
  * Single Responsibility: Orchestrate splash screen UI
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -13,10 +13,14 @@ import { SplashLogo } from "./SplashLogo";
 import { SplashTypography } from "./SplashTypography";
 import { SplashLoading } from "./SplashLoading";
 import { SplashDecorations } from "./SplashDecorations";
+import { SplashErrorBoundary } from "./SplashErrorBoundary";
 import type { SplashOptions } from "../../domain/entities/SplashOptions";
 
 export interface SplashScreenProps extends SplashOptions {
   visible?: boolean;
+  textColor?: string;
+  iconColor?: string;
+  decorationColor?: string;
 }
 
 /**
@@ -36,6 +40,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   renderContent,
   renderFooter,
   visible = true,
+  textColor,
+  iconColor,
+  decorationColor,
 }) => {
   const insets = useSafeAreaInsets();
   const { t } = useLocalization();
@@ -43,23 +50,29 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 
   const styles = getStyles(insets, tokens.spacing);
 
+  const timerRef = useRef<NodeJS.Timeout>();
+
   useEffect(() => {
     if (!visible) return;
 
-    const timer = setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       if (onReady) {
         onReady();
       }
     }, minimumDisplayTime);
 
-    return () => clearTimeout(timer);
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
   }, [visible, minimumDisplayTime, onReady]);
 
   if (!visible) return null;
 
-  const displayAppName = appName || t("branding.appName", "App Name");
-  const displayTagline = tagline || t("branding.tagline", "Your tagline here");
-  const displayLoadingText = loadingText || t("general.loading", "Loading...");
+  const displayAppName = appName || t("branding.appName", "");
+  const displayTagline = tagline || t("branding.tagline", "");
+  const displayLoadingText = loadingText || t("general.loading", "");
 
   // Use gradientColors if provided, otherwise use backgroundColor as solid color
   const finalBackgroundColor = gradientColors
@@ -78,13 +91,13 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 
   const content = (
     <>
-      <SplashDecorations />
+      <SplashDecorations decorationColor={decorationColor} />
 
       <View style={styles.content}>
         {renderLogo ? (
           renderLogo()
         ) : (
-          <SplashLogo logo={logo} />
+          <SplashLogo logo={logo} iconColor={iconColor} />
         )}
 
         {renderContent ? (
@@ -94,6 +107,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
             appName={displayAppName}
             tagline={displayTagline}
             tokens={tokens}
+            textColor={textColor}
           />
         )}
       </View>
@@ -103,6 +117,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
           loadingText={displayLoadingText}
           tokens={tokens}
           bottomInset={insets.bottom}
+          textColor={textColor}
         />
       )}
 
@@ -111,24 +126,26 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   );
 
   return (
-    <View style={styles.container}>
-      {hasGradient ? (
-        <LinearGradient
-          colors={finalGradientColors}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.gradient}
-        >
-          {content}
-        </LinearGradient>
-      ) : (
-        <View
-          style={[styles.gradient, { backgroundColor: finalBackgroundColor }]}
-        >
-          {content}
-        </View>
-      )}
-    </View>
+    <SplashErrorBoundary>
+      <View style={styles.container}>
+        {hasGradient ? (
+          <LinearGradient
+            colors={finalGradientColors}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradient}
+          >
+            {content}
+          </LinearGradient>
+        ) : (
+          <View
+            style={[styles.gradient, { backgroundColor: finalBackgroundColor }]}
+          >
+            {content}
+          </View>
+        )}
+      </View>
+    </SplashErrorBoundary>
   );
 };
 

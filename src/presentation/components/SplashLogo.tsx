@@ -11,12 +11,14 @@ export interface SplashLogoProps {
   logo?: string | React.ReactNode;
   logoSize?: number;
   glowSize?: number;
+  iconColor?: string;
 }
 
 export const SplashLogo: React.FC<SplashLogoProps> = ({
   logo,
   logoSize = 140,
   glowSize = 160,
+  iconColor = "#FFFFFF",
 }) => {
   const styles = getStyles(logoSize, glowSize);
 
@@ -25,11 +27,11 @@ export const SplashLogo: React.FC<SplashLogoProps> = ({
       <View style={styles.glow} />
       <View style={styles.background}>
         {typeof logo === "string" ? (
-          <AtomicIcon name={logo || "Sparkles"} size="xxl" customColor="#FFFFFF" />
+          <AtomicIcon name={logo || "Sparkles"} size="xxl" customColor={iconColor} />
         ) : logo ? (
           logo
         ) : (
-          <AtomicIcon name="Sparkles" size="xxl" customColor="#FFFFFF" />
+          <AtomicIcon name="Sparkles" size="xxl" customColor={iconColor} />
         )}
       </View>
     </View>

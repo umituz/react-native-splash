@@ -26,4 +26,6 @@ export type { SplashOptions } from "./domain/entities/SplashOptions";
 // =============================================================================
 
 export { SplashScreen, type SplashScreenProps } from "./presentation/components/SplashScreen";
+export { SplashErrorBoundary } from "./presentation/components/SplashErrorBoundary";
+export { useSplash } from "./presentation/hooks/useSplash";
 

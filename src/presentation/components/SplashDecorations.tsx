@@ -6,7 +6,15 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 
-export const SplashDecorations: React.FC = () => {
+export interface SplashDecorationsProps {
+  decorationColor?: string;
+}
+
+export const SplashDecorations: React.FC<SplashDecorationsProps> = ({
+  decorationColor = "rgba(255, 255, 255, 0.05)",
+}) => {
+  const styles = getStyles(decorationColor);
+
   return (
     <>
       <View style={styles.circle1} />
@@ -16,13 +24,13 @@ export const SplashDecorations: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (decorationColor: string) => StyleSheet.create({
   circle1: {
     position: "absolute",
     width: 300,
     height: 300,
     borderRadius: 150,
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
+    backgroundColor: decorationColor,
     top: -100,
     right: -100,
   },
@@ -31,7 +39,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    backgroundColor: "rgba(255, 255, 255, 0.03)",
+    backgroundColor: decorationColor.replace("0.05", "0.03"),
     bottom: -50,
     left: -50,
   },
@@ -40,7 +48,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    backgroundColor: "rgba(255, 255, 255, 0.04)",
+    backgroundColor: decorationColor.replace("0.05", "0.04"),
     top: "30%",
     right: "10%",
   },

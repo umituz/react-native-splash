@@ -8,6 +8,9 @@
     "build": "cp -r src/* lib/ && find lib -name '*.test.*' -delete",
     "typecheck": "echo 'TypeScript check passed - no issues found in source files'",
     "lint": "echo 'Linting passed - no issues found in source files'",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "prepublishOnly": "npm run build",
     "version:patch": "npm version patch -m 'chore: release v%s'",
     "version:minor": "npm version minor -m 'chore: release v%s'",
@@ -43,15 +46,22 @@
     "react-native-safe-area-context": "^5.0.0"
   },
   "devDependencies": {
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^12.4.2",
+    "@types/jest": "^29.5.8",
     "@types/react": "^18.2.45",
     "@types/react-native": "^0.73.0",
     "@umituz/react-native-design-system-atoms": "*",
     "@umituz/react-native-design-system-responsive": "*",
     "@umituz/react-native-design-system-theme": "*",
     "@umituz/react-native-localization": "latest",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^30.2.0",
     "react": ">=18.2.0",
     "react-native": "^0.74.0",
+    "react-native-gesture-handler": "^2.14.0",
     "react-native-safe-area-context": "^5.6.0",
+    "ts-jest": "^29.1.1",
     "typescript": "^5.3.3"
   },
   "publishConfig": {

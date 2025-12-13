@@ -15,20 +15,14 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "declaration": true,
-    "outDir": "./lib",
     "rootDir": "./src",
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["*"]
-    }
+    "baseUrl": "./src"
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "lib",
     "**/*.test.ts",
     "**/*.test.tsx"
   ]

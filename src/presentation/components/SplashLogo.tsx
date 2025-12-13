@@ -27,11 +27,11 @@ export const SplashLogo: React.FC<SplashLogoProps> = ({
       <View style={styles.glow} />
       <View style={styles.background}>
         {typeof logo === "string" ? (
-          <AtomicIcon name={logo || "Sparkles"} size="xxl" customColor={iconColor} />
+          <AtomicIcon name={logo || "sparkles"} size="xxl" customColor={iconColor} />
         ) : logo ? (
           logo
         ) : (
-          <AtomicIcon name="Sparkles" size="xxl" customColor={iconColor} />
+          <AtomicIcon name="sparkles" size="xxl" customColor={iconColor} />
         )}
       </View>
     </View>
@@ -54,11 +54,6 @@ const getStyles = (logoSize: number, glowSize: number) => {
       height: glowSize,
       borderRadius: glowRadius,
       backgroundColor: "rgba(255, 255, 255, 0.15)",
-      shadowColor: "#FFFFFF",
-      shadowOffset: { width: 0, height: 0 },
-      shadowOpacity: 0.5,
-      shadowRadius: 30,
-      elevation: 10,
     },
     background: {
       width: logoSize,
@@ -69,11 +64,6 @@ const getStyles = (logoSize: number, glowSize: number) => {
       justifyContent: "center",
       borderWidth: 2,
       borderColor: "rgba(255, 255, 255, 0.3)",
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.3,
-      shadowRadius: 8,
-      elevation: 8,
     },
   });
 };

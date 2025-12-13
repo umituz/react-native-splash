@@ -50,9 +50,6 @@ const getStyles = (tokens: DesignTokens, textColor: string) => {
       marginBottom: tokens.spacing.md,
       letterSpacing: -1.2,
       lineHeight: 56,
-      textShadowColor: "rgba(0, 0, 0, 0.25)",
-      textShadowOffset: { width: 0, height: 2 },
-      textShadowRadius: 6,
     },
     tagline: {
       fontSize: 17,
@@ -63,9 +60,6 @@ const getStyles = (tokens: DesignTokens, textColor: string) => {
       lineHeight: 24,
       fontWeight: "500" as const,
       letterSpacing: 0.2,
-      textShadowColor: "rgba(0, 0, 0, 0.2)",
-      textShadowOffset: { width: 0, height: 1 },
-      textShadowRadius: 3,
     },
   });
 };

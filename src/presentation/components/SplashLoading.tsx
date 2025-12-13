@@ -53,11 +53,6 @@ const getStyles = (tokens: DesignTokens, bottomInset: number, textColor: string)
       height: "100%",
       backgroundColor: textColor,
       borderRadius: 2,
-      shadowColor: textColor,
-      shadowOffset: { width: 0, height: 0 },
-      shadowOpacity: 0.8,
-      shadowRadius: 4,
-      elevation: 4,
     },
     text: {
       fontSize: 13,
@@ -65,9 +60,6 @@ const getStyles = (tokens: DesignTokens, bottomInset: number, textColor: string)
       opacity: 0.9,
       fontWeight: "500" as const,
       letterSpacing: 0.8,
-      textShadowColor: "rgba(0, 0, 0, 0.15)",
-      textShadowOffset: { width: 0, height: 1 },
-      textShadowRadius: 2,
     },
   });
 };

@@ -50,7 +50,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 
   const styles = getStyles(insets, tokens.spacing);
 
-  const timerRef = useRef<NodeJS.Timeout>();
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!visible) return;

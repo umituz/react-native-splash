@@ -18,7 +18,7 @@ export const useSplash = ({
 }: UseSplashOptions = {}) => {
   const [isVisible, setIsVisible] = useState(true);
   const [isReady, setIsReady] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout>();
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const isReadyRef = useRef(false);
 
   const hide = () => {

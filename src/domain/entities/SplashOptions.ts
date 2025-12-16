@@ -1,36 +1,28 @@
 /**
- * Splash Options - Minimal Configuration
+ * Splash Options - Ultra Minimal Configuration
  */
 
-import { ReactNode } from "react";
+import type { ImageSourcePropType } from "react-native";
 
 export interface SplashOptions {
+  /** App icon/logo image source */
+  icon?: ImageSourcePropType;
+
   /** App name to display */
   appName?: string;
 
   /** Tagline or subtitle */
   tagline?: string;
 
-  /** Background color */
+  /** Background color (default: #6366F1) */
   backgroundColor?: string;
 
-  /** Custom gradient colors (overrides backgroundColor) */
-  gradientColors?: readonly string[];
+  /** Gradient colors - if provided, overrides backgroundColor */
+  gradientColors?: readonly [string, string, ...string[]];
 
-  /** Loading text */
-  loadingText?: string;
+  /** Text color (default: #FFFFFF) */
+  textColor?: string;
 
   /** Show loading indicator (default: true) */
   showLoading?: boolean;
-
-  /** Minimum display time in ms (default: 1500) */
-  minimumDisplayTime?: number;
-
-  /** Callback when splash is ready */
-  onReady?: () => void | Promise<void>;
-
-  /** Custom render functions */
-  renderLogo?: () => ReactNode;
-  renderContent?: () => ReactNode;
-  renderFooter?: () => ReactNode;
 }

@@ -1,30 +1,31 @@
 /**
  * React Native Splash - Public API
  *
- * Generic splash screen for React Native apps with animations, gradients,
- * and customizable branding. Follows SOLID, DRY, KISS principles.
+ * Ultra minimal splash screen for React Native apps.
+ * Just displays icon, app name, and tagline.
+ * Parent component controls visibility and timing.
  *
  * Usage:
  *   import { SplashScreen } from '@umituz/react-native-splash';
  *
- *   <SplashScreen
- *     appName="My App"
- *     tagline="Your tagline here"
- *     logo="Sparkles"
- *     onReady={() => console.log('Ready')}
- *   />
+ *   // In your app:
+ *   const [showSplash, setShowSplash] = useState(true);
+ *
+ *   useEffect(() => {
+ *     // Your initialization logic
+ *     initializeApp().then(() => setShowSplash(false));
+ *   }, []);
+ *
+ *   if (showSplash) {
+ *     return (
+ *       <SplashScreen
+ *         icon={require('./assets/icon.png')}
+ *         appName="My App"
+ *         tagline="Your tagline here"
+ *       />
+ *     );
+ *   }
  */
 
-// =============================================================================
-// DOMAIN LAYER - Entities
-// =============================================================================
-
 export type { SplashOptions } from "./domain/entities/SplashOptions";
-
-// =============================================================================
-// PRESENTATION LAYER - Components
-// =============================================================================
-
 export { SplashScreen, type SplashScreenProps } from "./presentation/components/SplashScreen";
-export { useSplash } from "./presentation/hooks/useSplash";
-

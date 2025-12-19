@@ -31,7 +31,16 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
 }) => {
   const insets = useSafeAreaInsets();
 
-  if (!visible) return null;
+  React.useEffect(() => {
+    if (__DEV__) {
+      console.log(`[SplashScreen] Mounted - appName: ${appName}, visible: ${visible}`);
+    }
+  }, [appName, visible]);
+
+  if (!visible) {
+    if (__DEV__) console.log('[SplashScreen] Not visible, returning null');
+    return null;
+  }
 
   const content = (
     <View style={[styles.content, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>

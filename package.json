@@ -1,6 +1,6 @@
 {
   "name": "@umituz/react-native-splash",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Ultra minimal splash screen for React Native apps. Just icon, name, and tagline.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
